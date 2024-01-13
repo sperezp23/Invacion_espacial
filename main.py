@@ -2,6 +2,9 @@
 import pygame
 import random
 
+# %% Importar modulos
+from Enemigo import Enemigo
+
 # %% Inicializar Pygame
 pygame.init()
 
@@ -36,21 +39,13 @@ def jugador(x,y):
     pantalla.blit(img_jugador,(x,y))
 
 # %% Enemigo_1
-# Imagen
-img_enemigo_1 = pygame.image.load('assets\Enemigos\Pulpo.png')
-
-# Posición inicial
-enemigo_1_size = 64
-enemigo_1_x = random.randint(0,width-enemigo_1_size)
-enemigo_1_y = random.randint(0,64)
-
-# Variables de desplazamiento
-enemigo_1_cambio_x = 0.3
-enemigo_1_cambio_y = 64
-
-#Función
-def enemigo_1(x,y):
-    pantalla.blit(img_enemigo_1,(x,y))
+enemigo_1 = Enemigo(
+    pygame.image.load('assets\Enemigos\Pulpo.png'),
+    random.randint(0,width-Enemigo.size),
+    random.randint(0,64),
+    0.3,
+    64
+)
 
 # %% Enemigo_2
 # Imagen
@@ -117,7 +112,7 @@ while se_ejecuta:
     jugador_y += jugador_cambio_y
 
     # # Desplazamiento de los enemigos
-    enemigo_1_x += enemigo_1_cambio_x
+    enemigo_1.x += enemigo_1.cambio_x
     enemigo_2_x += enemigo_2_cambio_x
 
     # %% Mantener dentro de la pantalla 
@@ -135,12 +130,12 @@ while se_ejecuta:
         jugador_y = heigth - nave_size
     
     # Mantener ancho al enemigo_1
-    if enemigo_1_x <= 0:
-        enemigo_1_cambio_x = 0.3
-        enemigo_1_y += enemigo_1_cambio_y
-    elif enemigo_1_x >= width - enemigo_1_size:
-        enemigo_1_cambio_x = -0.3
-        enemigo_1_y += enemigo_1_cambio_y
+    if enemigo_1.x <= 0:
+        enemigo_1.cambio_x = 0.3
+        enemigo_1.y += enemigo_1.cambio_y
+    elif enemigo_1.x >= width - enemigo_1.size:
+        enemigo_1.cambio_x = -0.3
+        enemigo_1.y += enemigo_1.cambio_y
 
     # Mantener ancho al enemigo_2
     if enemigo_2_x <= 0:
@@ -152,7 +147,7 @@ while se_ejecuta:
 
     # %% Imprimir a los pesojanes en pantalla
     jugador(jugador_x,jugador_y)
-    enemigo_1(enemigo_1_x,enemigo_1_y)
+    enemigo_1.imprimir(pantalla)
     enemigo_2(enemigo_2_x,enemigo_2_y)
 
     pygame.display.update()        

@@ -48,21 +48,13 @@ enemigo_1 = Enemigo(
 )
 
 # %% Enemigo_2
-# Imagen
-img_enemigo_2 = pygame.image.load('assets\Enemigos\Extraterrestre.png')
-
-# Posición inicial
-enemigo_2_size = 64
-enemigo_2_x = random.randint(0,width-enemigo_2_size)
-enemigo_2_y = random.randint(64,128)
-
-# Variables de desplazamiento
-enemigo_2_cambio_x = 0.4
-enemigo_2_cambio_y = 64
-
-#Función
-def enemigo_2(x,y):
-    pantalla.blit(img_enemigo_2,(x,y))
+enemigo_2 = Enemigo(
+    pygame.image.load('assets\Enemigos\Extraterrestre.png'),
+    random.randint(0,width-Enemigo.size),
+    random.randint(64,128),
+    0.4,
+    64
+)
 
 # %% Loop del juego
 se_ejecuta = True
@@ -113,7 +105,7 @@ while se_ejecuta:
 
     # # Desplazamiento de los enemigos
     enemigo_1.x += enemigo_1.cambio_x
-    enemigo_2_x += enemigo_2_cambio_x
+    enemigo_2.x += enemigo_2.cambio_x
 
     # %% Mantener dentro de la pantalla 
 
@@ -138,16 +130,16 @@ while se_ejecuta:
         enemigo_1.y += enemigo_1.cambio_y
 
     # Mantener ancho al enemigo_2
-    if enemigo_2_x <= 0:
-        enemigo_2_cambio_x = 0.4
-        enemigo_2_y += enemigo_2_cambio_y
-    elif enemigo_2_x >= width - enemigo_2_size:
-        enemigo_2_cambio_x = -0.4
-        enemigo_2_y += enemigo_2_cambio_y
+    if enemigo_2.x <= 0:
+        enemigo_2.cambio_x = 0.4
+        enemigo_2.y += enemigo_2.cambio_y
+    elif enemigo_2.x >= width - enemigo_2.size:
+        enemigo_2.cambio_x = -0.4
+        enemigo_2.y += enemigo_2.cambio_y
 
     # %% Imprimir a los pesojanes en pantalla
     jugador(jugador_x,jugador_y)
     enemigo_1.imprimir(pantalla)
-    enemigo_2(enemigo_2_x,enemigo_2_y)
+    enemigo_2.imprimir(pantalla)
 
     pygame.display.update()        

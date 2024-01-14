@@ -1,3 +1,5 @@
+from random import randint
+
 class Enemigo():
     size = 64
 
@@ -22,3 +24,9 @@ class Enemigo():
     
     def acelerar(self):
         self.x += self.cambio_x
+
+    def respawm(self, width, y_inf, y_sup):
+        self.x = randint(0,width-Enemigo.size)
+        self.y = randint(y_inf,y_sup)
+    
+    

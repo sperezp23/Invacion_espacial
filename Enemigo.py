@@ -1,5 +1,4 @@
 class Enemigo():
-
     size = 64
 
     def __init__(self, skin, x, y, cambio_x, cambio_y) -> None:
@@ -11,3 +10,15 @@ class Enemigo():
     
     def imprimir(self, display) -> None:
         display.blit(self.skin,(self.x,self.y))
+
+    def margen_x(self, width, cambio):
+        if self.x <= 0:
+            self.cambio_x = cambio
+            self.y += self.cambio_y
+            
+        elif self.x >= width - self.size:
+            self.cambio_x = -cambio
+            self.y += self.cambio_y
+    
+    def acelerar(self):
+        self.x += self.cambio_x

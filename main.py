@@ -43,18 +43,14 @@ enemigo_1 = Enemigo(
     pygame.image.load('assets\Enemigos\Pulpo.png'),
     random.randint(0,width-Enemigo.size),
     random.randint(0,64),
-    0.3,
-    64
-)
+    0.3, 64)
 
 # %% Enemigo_2
 enemigo_2 = Enemigo(
     pygame.image.load('assets\Enemigos\Extraterrestre.png'),
     random.randint(0,width-Enemigo.size),
-    random.randint(64,128),
-    0.4,
-    64
-)
+    random.randint(84,128),
+    0.4, 64)
 
 # %% Loop del juego
 se_ejecuta = True
@@ -86,16 +82,15 @@ while se_ejecuta:
             elif evento.key == pygame.K_DOWN:
                 jugador_cambio_y = velocidad_jugador
 
+        # Tecla sin precionar
+        if evento.type == pygame.KEYUP:
+            
+            # Frenado
+            if (evento.key == pygame.K_LEFT or evento.key == pygame.K_RIGHT or
+                evento.key == pygame.K_UP or evento.key == pygame.K_DOWN):
 
-    # Tecla sin precionar
-    if evento.type == pygame.KEYUP:
-        
-        # Frenado
-        if (evento.key == pygame.K_LEFT or evento.key == pygame.K_RIGHT or
-            evento.key == pygame.K_UP or evento.key == pygame.K_DOWN):
-
-            jugador_cambio_x = 0
-            jugador_cambio_y = 0
+                jugador_cambio_x = 0
+                jugador_cambio_y = 0
 
     # %% Desplazamiento
 
@@ -104,8 +99,8 @@ while se_ejecuta:
     jugador_y += jugador_cambio_y
 
     # # Desplazamiento de los enemigos
-    enemigo_1.x += enemigo_1.cambio_x
-    enemigo_2.x += enemigo_2.cambio_x
+    enemigo_1.acelerar()
+    enemigo_2.acelerar()
 
     # %% Mantener dentro de la pantalla 
 
@@ -122,20 +117,10 @@ while se_ejecuta:
         jugador_y = heigth - nave_size
     
     # Mantener ancho al enemigo_1
-    if enemigo_1.x <= 0:
-        enemigo_1.cambio_x = 0.3
-        enemigo_1.y += enemigo_1.cambio_y
-    elif enemigo_1.x >= width - enemigo_1.size:
-        enemigo_1.cambio_x = -0.3
-        enemigo_1.y += enemigo_1.cambio_y
+    enemigo_1.margen_x(width, 0.3)    
 
     # Mantener ancho al enemigo_2
-    if enemigo_2.x <= 0:
-        enemigo_2.cambio_x = 0.4
-        enemigo_2.y += enemigo_2.cambio_y
-    elif enemigo_2.x >= width - enemigo_2.size:
-        enemigo_2.cambio_x = -0.4
-        enemigo_2.y += enemigo_2.cambio_y
+    enemigo_2.margen_x(width, 0.4)
 
     # %% Imprimir a los pesojanes en pantalla
     jugador(jugador_x,jugador_y)

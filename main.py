@@ -4,7 +4,7 @@ from random import randint
 from math import sqrt
 
 # %% Importar modulos
-from Enemigo import Enemigo
+from enemigo import Enemigo
 
 # %% Inicializar Pygame
 pygame.init()
@@ -42,19 +42,21 @@ velocidad_jugador = 0.4
 def jugador(x,y):
     pantalla.blit(img_jugador,(x,y))
 
-# %% Enemigo_1
-enemigo_1 = Enemigo(
-    pygame.image.load('assets\Enemigos\Pulpo.png'),
-    randint(0,width-Enemigo.size), randint(0,64), 0.3, 64)
+# %% Enemigos
+enemigos = []
 
-# %% Enemigo_2
-enemigo_2 = Enemigo(
+for i in range(4):
+    enemigos.append(Enemigo(
+    pygame.image.load('assets\Enemigos\Pulpo.png'),
+    randint(0,width-Enemigo.size), randint(0,64), 0.3, 64, 1))
+
+    enemigos.append(Enemigo(
     pygame.image.load('assets\Enemigos\Extraterrestre.png'),
-    randint(0,width-Enemigo.size), randint(84,128), 0.4, 64)
+    randint(0,width-Enemigo.size), randint(84,128), 0.4, 64, 2))
 
 # %% Bala
 # Imagen
-img_bala = pygame.image.load('assets\\Bala\\bala.png')
+img_bala = pygame.image.load('assets\\Bala\\laser.png')
 
 # Posición inicial
 bala_size = 32
@@ -63,7 +65,7 @@ bala_y = heigth - nave_size
 
 # Variables de desplazamiento
 bala_cambio_x = 0
-bala_cambio_y = 0.9
+bala_cambio_y = 1
 bala_visible = False
 
 def disparar(x,y):
@@ -79,7 +81,6 @@ def colision(x_1, y_1, x_2, y_2):
     else: 
         return False
     
-
 # %% Loop del juego
 se_ejecuta = True
 
@@ -122,8 +123,8 @@ while se_ejecuta:
     jugador_x += jugador_cambio_x
 
     # # Desplazamiento de los enemigos
-    enemigo_1.acelerar()
-    enemigo_2.acelerar()
+    for enemigo in enemigos:
+        enemigo.acelerar()
 
     # Movimiento Bala
     if bala_y <= -bala_size:
@@ -135,24 +136,26 @@ while se_ejecuta:
         bala_y -= bala_cambio_y
 
     # %% Colision
-    impacto_1 = colision(enemigo_1.x, enemigo_1.y, bala_x, bala_y)
-    impacto_2 = colision(enemigo_2.x, enemigo_2.y, bala_x, bala_y)
+    for enemigo in enemigos:
+        impacto = colision(enemigo.x, enemigo.y, bala_x, bala_y)    
 
-    # Impacto enemigo 1
-    if impacto_1:
-        bala_y = jugador_y
-        bala_visible = False
-        enemigo_1.respawm(width,0,64)
-        puntaje += 1
-        print(puntaje)
+        # Impacto enemigo
+        if impacto:
+            bala_y = jugador_y
+            bala_visible = False
+            puntaje += 1
+            print(puntaje)
 
-    # Impacto enemigo 2
-    if impacto_2:
-        bala_y = jugador_y
-        bala_visible = False
-        enemigo_2.respawm(width,84,128)
-        puntaje += 1
-        print(puntaje)
+            if enemigo.tipo == 1:
+                enemigo.respawm(width,0,64)
+            else:
+                enemigo.respawm(width,84,128) 
+            
+
+        if enemigo.tipo == 1:
+            enemigo.margen_x(width, 0.3)
+        else:    
+            enemigo.margen_x(width, 0.4)
 
     # %% Mantener dentro de la pantalla 
 
@@ -161,16 +164,11 @@ while se_ejecuta:
         jugador_x = 0
     elif jugador_x > width - nave_size:
         jugador_x = width - nave_size
-    
-    # Mantener ancho al enemigo_1
-    enemigo_1.margen_x(width, 0.3)    
-
-    # Mantener ancho al enemigo_2
-    enemigo_2.margen_x(width, 0.4)
 
     # %% Imprimir a los pesojanes en pantalla
     jugador(jugador_x,jugador_y)
-    enemigo_1.imprimir(pantalla)
-    enemigo_2.imprimir(pantalla)
+
+    for enemigo in enemigos:
+        enemigo.imprimir(pantalla)
 
     pygame.display.update()        

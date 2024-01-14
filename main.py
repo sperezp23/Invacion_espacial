@@ -10,7 +10,7 @@ from enemigo import Enemigo
 pygame.init()
 
 # Tamaño de la ventana de juego
-width = 800; heigth = 600
+width = 800; heigth = 632
 pantalla = pygame.display.set_mode((width,heigth))
 
 # %% Titulo e Icono
@@ -23,6 +23,15 @@ bg_image = pygame.image.load('assets\Fondo\Estrellas.jpg')
 
 # %% Inicializar variables
 puntaje = 0
+fuente = pygame.font.Font('assets\\Fonts\\font.ttf',32)
+texto_x = 10
+texto_y = 10
+color = (255,255,255)
+
+# Mostrar puntaje
+def mostrar_puntaje(x,y):
+    texto = fuente.render(f'Puntaje: {puntaje}', True, color)
+    pantalla.blit(texto,(x,y))
 
 # %% Jugador
 # Imagen
@@ -48,11 +57,11 @@ enemigos = []
 for i in range(4):
     enemigos.append(Enemigo(
     pygame.image.load('assets\Enemigos\Pulpo.png'),
-    randint(0,width-Enemigo.size), randint(0,64), 0.3, 64, 1))
+    randint(0,width-Enemigo.size), randint(32,96), 0.3, 64, 1))
 
     enemigos.append(Enemigo(
     pygame.image.load('assets\Enemigos\Extraterrestre.png'),
-    randint(0,width-Enemigo.size), randint(84,128), 0.4, 64, 2))
+    randint(0,width-Enemigo.size), randint(84,160), 0.4, 64, 2))
 
 # %% Bala
 # Imagen
@@ -65,7 +74,7 @@ bala_y = heigth - nave_size
 
 # Variables de desplazamiento
 bala_cambio_x = 0
-bala_cambio_y = 1
+bala_cambio_y = 2
 bala_visible = False
 
 def disparar(x,y):
@@ -166,6 +175,9 @@ while se_ejecuta:
         jugador_x = width - nave_size
 
     # %% Imprimir a los pesojanes en pantalla
+
+    mostrar_puntaje(texto_x, texto_y)    
+    
     jugador(jugador_x,jugador_y)
 
     for enemigo in enemigos:

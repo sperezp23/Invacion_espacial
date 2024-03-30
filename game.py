@@ -4,20 +4,20 @@ from random import randint
 from math import sqrt
 from pygame import mixer
 
-# %% Importar modulos propios
+# %% Importar módulos propios
 from objetos.enemigo import Enemigo
 from objetos.jugador import Jugador
 from objetos.bala import Bala
 from funciones.colision import detectar_colision
 
-# %% Estetica del juego
+# %% Estética del juego
 
 # Inicializar Pygame
 pygame.init()
 
 # Tamaño de la ventana de juego
-width = 800; heigth = 632
-pantalla = pygame.display.set_mode((width,heigth))
+width = 800; height = 632
+pantalla = pygame.display.set_mode((width,height))
 
 # Titulo e Icono
 pygame.display.set_caption('Invasión Espacial')
@@ -49,14 +49,14 @@ fuente_final = pygame.font.Font('assets\\Fonts\\font.ttf',64)
 
 def game_over():
     mi_fuente_final = fuente_final.render('GAME OVER',True,color)
-    pantalla.blit(mi_fuente_final,(width/8+10,heigth/2-20))
+    pantalla.blit(mi_fuente_final,(width/8+10,height/2-20))
 
 # %% Jugador
 tamaño = 64
 
 jugador = Jugador(
     pygame.image.load('assets\\Nave\\Nave_espacial.png'),
-    (width-64)/2, heigth - tamaño, 0, 0, 3, 64)
+    (width-64)/2, height - tamaño, 0, 0, 3, 64)
 
 velocidad_jugador = 0.6
 
@@ -75,7 +75,7 @@ for i in range(cantidad_enemigos):
 
 # %% Bala
 bala = Bala(pygame.image.load('assets\\Bala\\laser.png'),
-    0, heigth - tamaño, 0, 2, 4, 32, False)
+    0, height - tamaño, 0, 2, 4, 32, False)
 
 # Sonido Colisiones   
 sonido_bala = mixer.Sound('assets\Sonido\disparo.mp3')    
@@ -89,7 +89,7 @@ def main_game():
     se_ejecuta = True
 
     while se_ejecuta:
-        # Estableser el fondo de pantalla 
+        # Establecer el fondo de pantalla 
         pantalla.blit(bg_image,(0,0))
 
         # Iterar eventos
@@ -114,14 +114,14 @@ def main_game():
                     bala.x = jugador.x
                     bala.disparar(pantalla)
 
-            # Tecla sin precionar
+            # Tecla sin presionar
             if evento.type == pygame.KEYUP:
                 
                 # Frenado
                 if evento.key == pygame.K_LEFT or evento.key == pygame.K_RIGHT:
                     jugador.cambio_x = 0
 
-        # Desplazamineto del jugador
+        # Desplazamiento del jugador
         jugador.acelerar()
 
         # Movimiento Bala
@@ -166,7 +166,7 @@ def main_game():
         # Mantener ancho al jugador
         jugador.margen_x(width)
 
-        # Imprimir a los pesojanes y el puntaje en pantalla
+        # Imprimir a los personajes y el puntaje en pantalla
         mostrar_puntaje(texto_x, texto_y) 
 
         jugador.imprimir(pantalla)
